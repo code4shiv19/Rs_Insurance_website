@@ -23,6 +23,7 @@
     </a>
     <nav class="links" id="navLinks">
       <a href="#services" data-i18n="nav_services"></a>
+      <a href="#renewal" data-i18n="nav_renewal"></a>
       <a href="#why" data-i18n="nav_why"></a>
       <a href="#process" data-i18n="nav_process"></a>
       <a href="#contact" data-i18n="nav_contact"></a>
@@ -157,6 +158,60 @@
           <span class="card-cta"><span data-i18n="svc3_cta"></span> <svg viewBox="0 0 24 24"><path d="M5 12h14M13 6l6 6-6 6"/></svg></span>
         </div>
       </div>
+    </div>
+  </section>
+
+  <!-- VEHICLE RENEWAL QUOTE REQUEST -->
+  <section id="renewal">
+    <div class="container">
+      <div class="section-head reveal">
+        <span class="eyebrow" data-i18n="renewal_eyebrow"></span>
+        <h2 data-i18n="renewal_h2"></h2>
+        <p data-i18n="renewal_p"></p>
+      </div>
+
+      <form class="contact-card reveal" id="renewalForm" style="max-width:640px;margin:0 auto;">
+        <div class="form-row">
+          <div class="field">
+            <label for="rname" data-i18n="r_name_label"></label>
+            <input type="text" id="rname" data-i18n-placeholder="r_name_ph" required>
+          </div>
+          <div class="field">
+            <label for="rphone" data-i18n="r_phone_label"></label>
+            <input type="tel" id="rphone" data-i18n-placeholder="r_phone_ph" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="rvehicle" data-i18n="r_vehicle_label"></label>
+            <select id="rvehicle">
+              <option value="bike" data-i18n="r_vopt1"></option>
+              <option value="car" data-i18n="r_vopt2"></option>
+            </select>
+          </div>
+          <div class="field">
+            <label for="rregno" data-i18n="r_regno_label"></label>
+            <input type="text" id="rregno" style="text-transform:uppercase;" data-i18n-placeholder="r_regno_ph" required>
+          </div>
+        </div>
+        <div class="form-row">
+          <div class="field">
+            <label for="rinsurer" data-i18n="r_insurer_label"></label>
+            <input type="text" id="rinsurer" data-i18n-placeholder="r_insurer_ph">
+          </div>
+          <div class="field">
+            <label for="rexpiry" data-i18n="r_expiry_label"></label>
+            <input type="date" id="rexpiry">
+          </div>
+        </div>
+        <div class="field">
+          <label for="rpremium" data-i18n="r_premium_label"></label>
+          <input type="number" id="rpremium" min="0" data-i18n-placeholder="r_premium_ph">
+        </div>
+        <button type="submit" class="btn btn-gold" style="width:100%;" data-i18n="r_submit"></button>
+        <p class="form-note" data-i18n="r_note"></p>
+        <div class="form-msg" id="renewalMsg" data-i18n="r_success"></div>
+      </form>
     </div>
   </section>
 

@@ -6,6 +6,7 @@
     nav_why: {en:"About Us", hi:"हमारे बारे में"},
     nav_process: {en:"How It Works", hi:"कैसे काम करता है"},
     nav_contact: {en:"Contact", hi:"संपर्क करें"},
+    nav_renewal: {en:"Renewal Quote", hi:"रिन्यूअल कोटेशन"},
     nav_call: {en:"Call Now", hi:"कॉल करें"},
     nav_cta: {en:"Get Free Advice", hi:"मुफ़्त सलाह लें"},
 
@@ -48,6 +49,28 @@
     svc3_li3: {en:"Reminder before expiry", hi:"समय सीमा खत्म होने से पहले याद दिलाना"},
     svc3_li4: {en:"Follows all required norms", hi:"सभी ज़रूरी नियमों का पालन"},
     svc3_cta: {en:"Ask about PUC", hi:"PUC के बारे में पूछें"},
+
+    renewal_eyebrow: {en:"Vehicle Renewal", hi:"वाहन रिन्यूअल"},
+    renewal_h2: {en:"Get your next renewal quote", hi:"अपनी अगली रिन्यूअल कोटेशन पाएं"},
+    renewal_p: {en:"Share your vehicle number and last policy details — we'll check and send you the renewal premium quote on WhatsApp. Note: this only sends a request; it does not calculate the premium automatically.", hi:"अपना वाहन नंबर और पिछली पॉलिसी की जानकारी दें—हम जांच कर आपको रिन्यूअल प्रीमियम का कोटेशन व्हाट्सएप पर भेजेंगे। ध्यान दें: यह सिर्फ रिक्वेस्ट भेजता है, प्रीमियम अपने आप नहीं निकलता।"},
+
+    r_name_label: {en:"Your Name", hi:"आपका नाम"},
+    r_name_ph: {en:"Enter your full name", hi:"पूरा नाम लिखें"},
+    r_phone_label: {en:"Phone Number", hi:"फ़ोन नंबर"},
+    r_phone_ph: {en:"10-digit mobile number", hi:"10 अंकों का मोबाइल नंबर"},
+    r_vehicle_label: {en:"Vehicle Type", hi:"वाहन प्रकार"},
+    r_vopt1: {en:"Bike / Two-wheeler", hi:"बाइक / टू-व्हीलर"},
+    r_vopt2: {en:"Car / Four-wheeler", hi:"कार / फोर-व्हीलर"},
+    r_regno_label: {en:"Vehicle Registration Number", hi:"वाहन रजिस्ट्रेशन नंबर"},
+    r_regno_ph: {en:"e.g. UP32 AB 1234", hi:"जैसे UP32 AB 1234"},
+    r_insurer_label: {en:"Last / Current Insurance Company", hi:"पिछली / मौजूदा बीमा कंपनी"},
+    r_insurer_ph: {en:"e.g. National Insurance", hi:"जैसे National Insurance"},
+    r_expiry_label: {en:"Last Policy Expiry Date", hi:"पिछली पॉलिसी की समाप्ति तिथि"},
+    r_premium_label: {en:"Last Premium Paid (₹, optional)", hi:"पिछला प्रीमियम (₹, वैकल्पिक)"},
+    r_premium_ph: {en:"e.g. 1200", hi:"जैसे 1200"},
+    r_submit: {en:"Request Renewal Quote on WhatsApp", hi:"व्हाट्सएप पर रिन्यूअल कोटेशन मांगें"},
+    r_note: {en:"This sends your details to our team on WhatsApp — we'll reply with your renewal premium quote. The premium is not calculated automatically on this site.", hi:"यह आपकी जानकारी हमारी टीम को व्हाट्सएप पर भेजता है—हम आपको रिन्यूअल प्रीमियम का कोटेशन भेजेंगे। प्रीमियम इस वेबसाइट पर अपने आप नहीं निकाला जाता।"},
+    r_success: {en:"Thank you! Opening WhatsApp — please send your request there.", hi:"धन्यवाद! व्हाट्सएप खोला जा रहा है—कृपया वहाँ अपनी रिक्वेस्ट भेजें।"},
 
     why_eyebrow: {en:"Why Choose RS", hi:"RS क्यों चुनें"},
     why_h2: {en:"Trust as easy as one phone call", hi:"एक फ़ोन कॉल जितना आसान भरोसा"},
@@ -169,5 +192,40 @@
     if(msg){ text += `Message: ${msg}%0A`; }
 
     formMsg.classList.add('show');
+    window.open(`https://wa.me/919598480276?text=${text}`, '_blank');
+  });
+
+  // Vehicle renewal quote request -> WhatsApp
+  const renewalForm = document.getElementById('renewalForm');
+  const renewalMsg = document.getElementById('renewalMsg');
+  renewalForm.addEventListener('submit', function(e){
+    e.preventDefault();
+
+    const name = document.getElementById('rname').value.trim();
+    const phone = document.getElementById('rphone').value.trim();
+    const vehicleSelect = document.getElementById('rvehicle');
+    const vehicleType = vehicleSelect.options[vehicleSelect.selectedIndex].text;
+    const regNo = document.getElementById('rregno').value.trim().toUpperCase();
+    const insurer = document.getElementById('rinsurer').value.trim();
+    const expiry = document.getElementById('rexpiry').value;
+    const premium = document.getElementById('rpremium').value;
+
+    if(!name || !phone || !regNo){
+      document.getElementById('rregno').reportValidity();
+      return;
+    }
+
+    let text = `Hello RS Insurance Center,%0A`;
+    text += `I want a *renewal quote* for my vehicle.%0A`;
+    text += `Name: ${name}%0A`;
+    text += `Phone number: ${phone}%0A`;
+    text += `Vehicle type: ${vehicleType}%0A`;
+    text += `Vehicle number: ${regNo}%0A`;
+    if(insurer){ text += `Last insurer: ${insurer}%0A`; }
+    if(expiry){ text += `Last policy expiry: ${expiry}%0A`; }
+    if(premium){ text += `Last premium paid: Rs.${premium}%0A`; }
+    text += `Please share the renewal premium quote.`;
+
+    renewalMsg.classList.add('show');
     window.open(`https://wa.me/919598480276?text=${text}`, '_blank');
   });
