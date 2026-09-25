@@ -1,6 +1,5 @@
   document.getElementById('year').textContent = new Date().getFullYear();
 
-  // ===== i18n dictionary =====
   const translations = {
     nav_services: {en:"Services", hi:"सेवाएं"},
     nav_why: {en:"About Us", hi:"हमारे बारे में"},
@@ -163,7 +162,6 @@
   menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
-  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -174,7 +172,6 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
-  // Contact form -> WhatsApp
   const form = document.getElementById('enquiryForm');
   const formMsg = document.getElementById('formMsg');
   form.addEventListener('submit', function(e){
@@ -195,7 +192,6 @@
     window.open(`https://wa.me/919598480276?text=${text}`, '_blank');
   });
 
-  // Vehicle renewal quote request -> WhatsApp
   const renewalForm = document.getElementById('renewalForm');
   const renewalMsg = document.getElementById('renewalMsg');
   renewalForm.addEventListener('submit', function(e){
