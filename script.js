@@ -59,8 +59,9 @@
     r_phone_label: {en:"Phone Number", hi:"फ़ोन नंबर"},
     r_phone_ph: {en:"10-digit mobile number", hi:"10 अंकों का मोबाइल नंबर"},
     r_vehicle_label: {en:"Vehicle Type", hi:"वाहन प्रकार"},
-    r_vopt1: {en:"Bike / Two-wheeler", hi:"बाइक / टू-व्हीलर"},
-    r_vopt2: {en:"Car / Four-wheeler", hi:"कार / फोर-व्हीलर"},
+    r_vopt1: {en:"Bike", hi:"बाइक"},
+    r_vopt2: {en:"Car", hi:"कार"},
+    r_vopt3: {en:"Commercial Vehicle", hi:"व्यावसायिक वाहन"},
     r_regno_label: {en:"Vehicle Registration Number", hi:"वाहन रजिस्ट्रेशन नंबर"},
     r_regno_ph: {en:"e.g. UP32 AB 1234", hi:"जैसे UP32 AB 1234"},
     r_insurer_label: {en:"Last / Current Insurance Company", hi:"पिछली / मौजूदा बीमा कंपनी"},
@@ -195,7 +196,7 @@
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.01 });
+  }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   // Contact form -> WhatsApp
@@ -362,11 +363,13 @@ if(featuredSlider){
 
   function resetSliderTimer(){
     window.clearInterval(sliderTimer);
-    sliderTimer = window.setInterval(() => showFeaturedSlide(featuredIndex + 1), 4000);
+    sliderTimer = window.setInterval(() => showFeaturedSlide(featuredIndex + 1), 3000);
   }
 
   document.getElementById('featuredPrev').addEventListener('click', () => { showFeaturedSlide(featuredIndex - 1); resetSliderTimer(); });
   document.getElementById('featuredNext').addEventListener('click', () => { showFeaturedSlide(featuredIndex + 1); resetSliderTimer(); });
+  featuredSlider.addEventListener('mouseenter', () => window.clearInterval(sliderTimer));
+  featuredSlider.addEventListener('mouseleave', resetSliderTimer);
   featuredSlider.addEventListener('keydown', (event) => {
     if(event.key === 'ArrowLeft') showFeaturedSlide(featuredIndex - 1);
     if(event.key === 'ArrowRight') showFeaturedSlide(featuredIndex + 1);
