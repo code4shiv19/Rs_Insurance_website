@@ -195,7 +195,7 @@
         observer.unobserve(entry.target);
       }
     });
-  }, { threshold: 0.12 });
+  }, { threshold: 0.01 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
   // Contact form -> WhatsApp
@@ -362,13 +362,11 @@ if(featuredSlider){
 
   function resetSliderTimer(){
     window.clearInterval(sliderTimer);
-    sliderTimer = window.setInterval(() => showFeaturedSlide(featuredIndex + 1), 3000);
+    sliderTimer = window.setInterval(() => showFeaturedSlide(featuredIndex + 1), 4000);
   }
 
   document.getElementById('featuredPrev').addEventListener('click', () => { showFeaturedSlide(featuredIndex - 1); resetSliderTimer(); });
   document.getElementById('featuredNext').addEventListener('click', () => { showFeaturedSlide(featuredIndex + 1); resetSliderTimer(); });
-  featuredSlider.addEventListener('mouseenter', () => window.clearInterval(sliderTimer));
-  featuredSlider.addEventListener('mouseleave', resetSliderTimer);
   featuredSlider.addEventListener('keydown', (event) => {
     if(event.key === 'ArrowLeft') showFeaturedSlide(featuredIndex - 1);
     if(event.key === 'ArrowRight') showFeaturedSlide(featuredIndex + 1);
