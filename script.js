@@ -62,6 +62,10 @@
     r_vopt1: {en:"Bike", hi:"बाइक"},
     r_vopt2: {en:"Car", hi:"कार"},
     r_vopt3: {en:"Commercial Vehicle", hi:"व्यावसायिक वाहन"},
+    r_insurance_type_label: {en:"Insurance Type", hi:"बीमा का प्रकार"},
+    r_iopt1: {en:"Third Party", hi:"थर्ड पार्टी"},
+    r_iopt2: {en:"Comprehensive", hi:"कॉम्प्रिहेंसिव"},
+    r_iopt3: {en:"Comprehensive & Zero dep", hi:"कॉम्प्रिहेंसिव और ज़ीरो डेप"},
     r_regno_label: {en:"Vehicle Registration Number", hi:"वाहन रजिस्ट्रेशन नंबर"},
     r_regno_ph: {en:"e.g. UP32 AB 1234", hi:"जैसे UP32 AB 1234"},
     r_insurer_label: {en:"Last / Current Insurance Company", hi:"पिछली / मौजूदा बीमा कंपनी"},
@@ -242,6 +246,8 @@
     document.getElementById('rphone').setCustomValidity('');
     const vehicleSelect = document.getElementById('rvehicle');
     const vehicleType = vehicleSelect.options[vehicleSelect.selectedIndex].text;
+    const insuranceTypeSelect = document.getElementById('rinsuranceType');
+    const insuranceType = insuranceTypeSelect.options[insuranceTypeSelect.selectedIndex].text;
     const regNo = document.getElementById('rregno').value.trim().toUpperCase();
     const insurer = document.getElementById('rinsurer').value.trim();
     const expiry = document.getElementById('rexpiry').value;
@@ -257,6 +263,7 @@
     text += `Name: ${name}%0A`;
     text += `Phone number: ${phone}%0A`;
     text += `Vehicle type: ${vehicleType}%0A`;
+    text += `Insurance type: ${insuranceType}%0A`;
     text += `Vehicle number: ${regNo}%0A`;
     if(insurer){ text += `Last insurer: ${insurer}%0A`; }
     if(expiry){ text += `Last policy expiry: ${expiry}%0A`; }
