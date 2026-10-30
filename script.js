@@ -1,5 +1,6 @@
   document.getElementById('year').textContent = new Date().getFullYear();
 
+  // ===== i18n dictionary =====
   const translations = {
     nav_services: {en:"Services", hi:"सेवाएं"},
     nav_why: {en:"About Us", hi:"हमारे बारे में"},
@@ -83,6 +84,24 @@
     why4_h4: {en:"Transparent information", hi:"पारदर्शी जानकारी"},
     why4_p: {en:"Everything explained clearly, with no hidden conditions.", hi:"बिना छुपी शर्तों के, हर बात साफ़-साफ़ बताई जाती है।"},
 
+    nav_gallery: {en:"Gallery", hi:"गैलरी"},
+
+    gallery_eyebrow: {en:"Gallery", hi:"गैलरी"},
+    gallery_h2: {en:"Our office, achievements & moments", hi:"हमारा कार्यालय, उपलब्धियां और यादगार पल"},
+    gallery_p: {en:"A glimpse of our office, awards and events that reflect our journey of trust and service.", hi:"हमारे कार्यालय, पुरस्कारों और आयोजनों की एक झलक जो हमारी भरोसे और सेवा की यात्रा को दर्शाती है।"},
+    slider_eyebrow: {en:"Featured moments", hi:"खास झलकियां"},
+    g_filter_all: {en:"All", hi:"सभी"},
+    g_filter_office: {en:"Office", hi:"कार्यालय"},
+    g_filter_achievement: {en:"Achievements", hi:"उपलब्धियां"},
+    g_filter_event: {en:"PUC Centre", hi:"PUC केंद्र"},
+    g_placeholder: {en:"Photo coming soon", hi:"फोटो जल्द जोड़ी जाएगी"},
+    g_office1: {en:"Our Office", hi:"हमारा कार्यालय"},
+    g_office2: {en:"Our Team", hi:"हमारी टीम"},
+    g_ach1: {en:"LIC Excellence Award", hi:"LIC एक्सीलेंस अवार्ड"},
+    g_ach2: {en:"Recognition Certificate", hi:"सम्मान प्रमाण पत्र"},
+    g_event1: {en:"Puc Centre", hi:"Puc केंद्र"},
+    g_event2: {en:"Policy Awareness Camp", hi:"पॉलिसी जागरूकता शिविर"},
+
     process_eyebrow: {en:"Process", hi:"प्रक्रिया"},
     process_h2: {en:"Protection starts in four easy steps", hi:"चार आसान चरणों में सुरक्षा शुरू"},
     step1_h4: {en:"Get in touch", hi:"संपर्क करें"},
@@ -156,12 +175,19 @@
     btn.addEventListener('click', () => applyLanguage(btn.getAttribute('data-lang')));
   });
 
+  document.querySelectorAll('#rphone, #fphone').forEach(phoneInput => {
+    phoneInput.addEventListener('input', () => {
+      phoneInput.value = phoneInput.value.replace(/\D/g, '').slice(0, 10);
+    });
+  });
+
   // Mobile menu
   const menuToggle = document.getElementById('menuToggle');
   const navLinks = document.getElementById('navLinks');
   menuToggle.addEventListener('click', () => navLinks.classList.toggle('open'));
   navLinks.querySelectorAll('a').forEach(a => a.addEventListener('click', () => navLinks.classList.remove('open')));
 
+  // Scroll reveal
   const observer = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
       if (entry.isIntersecting) {
@@ -172,12 +198,19 @@
   }, { threshold: 0.12 });
   document.querySelectorAll('.reveal').forEach(el => observer.observe(el));
 
+  // Contact form -> WhatsApp
   const form = document.getElementById('enquiryForm');
   const formMsg = document.getElementById('formMsg');
   form.addEventListener('submit', function(e){
     e.preventDefault();
     const name = document.getElementById('fname').value.trim();
     const phone = document.getElementById('fphone').value.trim();
+    if(!/^\d{10}$/.test(phone)){
+      document.getElementById('fphone').setCustomValidity('Please enter a valid 10-digit phone number.');
+      document.getElementById('fphone').reportValidity();
+      return;
+    }
+    document.getElementById('fphone').setCustomValidity('');
     const serviceSelect = document.getElementById('fservice');
     const service = serviceSelect.options[serviceSelect.selectedIndex].text;
     const msg = document.getElementById('fmsg').value.trim();
@@ -192,6 +225,7 @@
     window.open(`https://wa.me/919598480276?text=${text}`, '_blank');
   });
 
+  // Vehicle renewal quote request -> WhatsApp
   const renewalForm = document.getElementById('renewalForm');
   const renewalMsg = document.getElementById('renewalMsg');
   renewalForm.addEventListener('submit', function(e){
@@ -199,6 +233,12 @@
 
     const name = document.getElementById('rname').value.trim();
     const phone = document.getElementById('rphone').value.trim();
+    if(!/^\d{10}$/.test(phone)){
+      document.getElementById('rphone').setCustomValidity('Please enter a valid 10-digit phone number.');
+      document.getElementById('rphone').reportValidity();
+      return;
+    }
+    document.getElementById('rphone').setCustomValidity('');
     const vehicleSelect = document.getElementById('rvehicle');
     const vehicleType = vehicleSelect.options[vehicleSelect.selectedIndex].text;
     const regNo = document.getElementById('rregno').value.trim().toUpperCase();
@@ -225,3 +265,143 @@
     renewalMsg.classList.add('show');
     window.open(`https://wa.me/919598480276?text=${text}`, '_blank');
   });
+
+// ===== Gallery: image fallback handling =====
+function handleGalleryImgError(imgEl){
+  imgEl.style.display = 'none';
+  const fallback = imgEl.nextElementSibling;
+  if(fallback && fallback.classList.contains('gallery-fallback')){
+    fallback.classList.add('show');
+  }
+}
+
+// ===== Gallery: filters =====
+document.querySelectorAll('.gallery-filter-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.gallery-filter-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const filter = btn.getAttribute('data-filter');
+    document.querySelectorAll('.gallery-item').forEach(item => {
+      const cat = (item.getAttribute('data-category') || '').toLowerCase();
+      const selected = (filter || '').toLowerCase();
+      item.classList.toggle('hidden', selected !== 'all' && cat !== selected);
+    });
+  });
+});
+
+// ===== Featured image slider =====
+const featuredSlider = document.getElementById('featuredSlider');
+if(featuredSlider){
+  const featuredSlides = [
+    {image:'images/acheivement-2.jpg', title:'Achievement 2', description:'A proud milestone from the journey of RS Insurance Center.'},
+    {image:'images/acheivement-1.jpg', title:'Our Achievement', description:'Milestones that reflect our commitment to honest advice and dependable service.'},
+    {image:'images/acheivement-4.jpg', title:'A Proud Achievement', description:'A memorable award moment shared with the RS Insurance team.'},
+    {image:'images/acheivement-5.jpg', title:'Milestones Together', description:'Honouring consistent work, dedication and customer trust.'}
+  ];
+  const slideImage = document.getElementById('featuredSlideImage');
+  const incomingImage = document.getElementById('featuredSlideIncoming');
+  const slideCount = document.getElementById('featuredSlideCount');
+  const dots = document.getElementById('featuredDots');
+  const thumbnails = document.getElementById('featuredThumbnails');
+  let featuredIndex = 0;
+  let sliderTimer;
+  let fadeTimer;
+
+  featuredSlides.forEach((slide, index) => {
+    const dot = document.createElement('button');
+    dot.type = 'button';
+    dot.className = 'slider-dot';
+    dot.setAttribute('aria-label', `Show image ${index + 1}`);
+    dot.addEventListener('click', () => showFeaturedSlide(index));
+    dots.appendChild(dot);
+
+    const thumbnail = document.createElement('button');
+    thumbnail.type = 'button';
+    thumbnail.className = 'featured-thumbnail';
+    thumbnail.setAttribute('aria-label', `Show ${slide.title}`);
+    thumbnail.innerHTML = `<img src="${slide.image}" alt="${slide.title}" loading="lazy">`;
+    thumbnail.addEventListener('click', () => showFeaturedSlide(index));
+    thumbnails.appendChild(thumbnail);
+  });
+
+  function showFeaturedSlide(index){
+    const targetIndex = (index + featuredSlides.length) % featuredSlides.length;
+    featuredIndex = targetIndex;
+    const slide = featuredSlides[targetIndex];
+    const imageWrap = slideImage.parentElement;
+    window.clearTimeout(fadeTimer);
+    incomingImage.src = slide.image;
+    incomingImage.alt = slide.title;
+    incomingImage.className = 'top-slider-incoming';
+    incomingImage.classList.toggle('slide-portrait', targetIndex === 1);
+    incomingImage.classList.toggle('slide-group', targetIndex === 2);
+    incomingImage.classList.toggle('slide-bright', targetIndex === 3);
+    imageWrap.classList.add('is-changing');
+    window.setTimeout(() => imageWrap.classList.add('is-sliding'), 40);
+    fadeTimer = window.setTimeout(() => {
+      slideImage.style.transition = 'none';
+      incomingImage.style.transition = 'none';
+      imageWrap.classList.remove('is-changing', 'is-sliding');
+      slideImage.src = slide.image;
+      slideImage.alt = slide.title;
+      slideImage.classList.toggle('slide-portrait', targetIndex === 1);
+      slideImage.classList.toggle('slide-group', targetIndex === 2);
+      slideImage.classList.toggle('slide-bright', targetIndex === 3);
+      slideImage.style.transform = 'translateX(0)';
+      incomingImage.style.transform = 'translateX(100%)';
+      slideCount.textContent = `${String(targetIndex + 1).padStart(2, '0')} / ${String(featuredSlides.length).padStart(2, '0')}`;
+      void imageWrap.offsetWidth;
+      slideImage.style.transform = '';
+      incomingImage.style.transform = '';
+      slideImage.style.transition = '';
+      incomingImage.style.transition = '';
+    }, 1250);
+    dots.querySelectorAll('.slider-dot').forEach((dot, dotIndex) => dot.classList.toggle('active', dotIndex === targetIndex));
+    thumbnails.querySelectorAll('.featured-thumbnail').forEach((thumbnail, thumbnailIndex) => thumbnail.classList.toggle('active', thumbnailIndex === targetIndex));
+  }
+
+  function resetSliderTimer(){
+    window.clearInterval(sliderTimer);
+    sliderTimer = window.setInterval(() => showFeaturedSlide(featuredIndex + 1), 3000);
+  }
+
+  document.getElementById('featuredPrev').addEventListener('click', () => { showFeaturedSlide(featuredIndex - 1); resetSliderTimer(); });
+  document.getElementById('featuredNext').addEventListener('click', () => { showFeaturedSlide(featuredIndex + 1); resetSliderTimer(); });
+  featuredSlider.addEventListener('mouseenter', () => window.clearInterval(sliderTimer));
+  featuredSlider.addEventListener('mouseleave', resetSliderTimer);
+  featuredSlider.addEventListener('keydown', (event) => {
+    if(event.key === 'ArrowLeft') showFeaturedSlide(featuredIndex - 1);
+    if(event.key === 'ArrowRight') showFeaturedSlide(featuredIndex + 1);
+  });
+  featuredSlider.tabIndex = 0;
+  dots.firstElementChild?.classList.add('active');
+  thumbnails.firstElementChild?.classList.add('active');
+  resetSliderTimer();
+}
+
+// ===== Gallery: lightbox =====
+const lightboxOverlay = document.getElementById('lightboxOverlay');
+const lightboxImg = document.getElementById('lightboxImg');
+const lightboxCaption = document.getElementById('lightboxCaption');
+
+document.querySelectorAll('.gallery-frame').forEach(frame => {
+  frame.addEventListener('click', () => {
+    const img = frame.querySelector('img');
+    const caption = frame.querySelector('.gallery-overlay')?.textContent.trim() || '';
+    if(img && img.style.display !== 'none' && img.complete && img.naturalWidth > 0){
+      lightboxImg.src = img.src;
+      lightboxImg.style.display = 'block';
+    } else {
+      lightboxImg.style.display = 'none';
+    }
+    lightboxCaption.textContent = caption;
+    lightboxOverlay.classList.add('show');
+  });
+});
+
+function closeLightbox(){
+  lightboxOverlay.classList.remove('show');
+}
+document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+lightboxOverlay.addEventListener('click', (e) => { if(e.target === lightboxOverlay) closeLightbox(); });
+document.addEventListener('keydown', (e) => { if(e.key === 'Escape') closeLightbox(); });
